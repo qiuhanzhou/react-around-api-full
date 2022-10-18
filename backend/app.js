@@ -34,40 +34,47 @@ app.use(cors())
 app.options('*', cors()) //enable requests for all routes
 
 //enable cross domain visits from allowed origins
-// app.use((req, res, next) => {
-//   const allowedCors = [
-//     'https://loveali.students.nomoredomainssbs.ru',
-//     'http://localhost:3000',
-//   ]
+app.use((req, res, next) => {
+  const allowedCors = [
+    'https://loveali.students.nomoredomainssbs.ru',
+    'http://localhost:3000',
+  ]
 
-//   const { origin } = req.headers // saving the request source to the 'origin' variable
-//   // checking that the source of the request is mentioned in the list of allowed ones
-//   if (allowedCors.includes(origin)) {
-//     // setting a header that allows the browser to make requests from this source
-//     res.header('Access-Control-Allow-Origin', origin)
-//   }
+  const { origin } = req.headers // saving the request source to the 'origin' variable
+  // checking that the source of the request is mentioned in the list of allowed ones
+  if (allowedCors.includes(origin)) {
+    // setting a header that allows the browser to make requests from this source
+    res.header('Access-Control-Allow-Origin', origin)
+  }
 
-//   const { method } = req // Saving the request type (HTTP method) to the corresponding variable
+  const { method } = req // Saving the request type (HTTP method) to the corresponding variable
 
-//   // Default value for Access-Control-Allow-Methods header (all request types are allowed)
-//   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE'
+  // Default value for Access-Control-Allow-Methods header (all request types are allowed)
+  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE'
 
-//   // If this is a preliminary request, add the required headers
-//   if (method === 'OPTIONS') {
-//     // allowing cross-domain requests of any type (default)
-//     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS)
-//   }
+  // If this is a preliminary request, add the required headers
+  if (method === 'OPTIONS') {
+    // allowing cross-domain requests of any type (default)
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS)
+  }
 
-//   const requestHeaders = req.headers['access-control-request-headers']
-//   if (method === 'OPTIONS') {
-//     // allowing cross-domain requests with these headers
-//     res.header('Access-Control-Allow-Headers', requestHeaders)
-//     // finish processing the request and return the result to the client
-//     return res.end()
-//   }
+  const requestHeaders = req.headers['access-control-request-headers']
+  if (method === 'OPTIONS') {
+    // allowing cross-domain requests with these headers
+    res.header('Access-Control-Allow-Headers', requestHeaders)
+    // finish processing the request and return the result to the client
+    return res.end()
+  }
 
-//   next()
-// })
+  next()
+})
+
+// REMEMBER: REMOVE AFTER PASS REVIEW
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Server will crash now')
+  }, 0)
+})
 
 app.use(requestLogger) // enabling the request logger
 
