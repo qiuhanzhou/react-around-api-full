@@ -1,0 +1,14 @@
+.card__like-button,
+.card__like-button:disabled {
+  background: url(../../../images/like.svg) no-repeat;
+  align-self: center;
+  justify-content: flex-end;
+  height: 19px;
+  width: 21px;
+  border: none;
+  flex-shrink: 0;
+}
+.card__like-button:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}

@@ -1,0 +1,18 @@
+.profile__avatar-wrapper {
+  position: relative;
+  margin-right: 30px;
+  cursor: pointer;
+}
+@media screen and (max-width: 1279px) {
+  .profile__avatar-wrapper {
+    margin-right: 0;
+  }
+}
+
+.profile__avatar-wrapper:hover .profile__avatar {
+  opacity: 0.4;
+}
+
+.profile__avatar-wrapper:hover .profile__edit-icon {
+  visibility: visible;
+}

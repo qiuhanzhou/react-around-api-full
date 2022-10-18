@@ -1,0 +1,12 @@
+.auth__redirect_link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.auth__redirect_link :link {
+  text-decoration: none;
+}
+
+.auth__redirect_link :hover {
+  text-decoration: none;
+}

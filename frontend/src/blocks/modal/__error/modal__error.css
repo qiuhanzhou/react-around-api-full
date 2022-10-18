@@ -1,0 +1,8 @@
+.modal__error {
+  display: inline-block;
+  margin: 5px 0 13px 0;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+  visibility: hidden;
+}

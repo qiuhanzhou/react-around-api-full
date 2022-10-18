@@ -1,0 +1,15 @@
+.modal__input {
+  color: black;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0 0 13px;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+@media screen and (max-width: 768px) {
+  .modal__input {
+    padding: 0 0 9px;
+  }
+}

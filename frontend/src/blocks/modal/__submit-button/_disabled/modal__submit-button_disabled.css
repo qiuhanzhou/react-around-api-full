@@ -1,0 +1,11 @@
+.modal__submit-button_disabled {
+  color: rgba(0, 0, 0, 0.2);
+  background: #e5e5e520;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: default;
+}
+@media screen and (max-width: 768px) {
+  .modal__submit-button {
+    margin: 16px 0 25px;
+  }
+}

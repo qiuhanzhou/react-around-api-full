@@ -1,0 +1,16 @@
+.card__close-button {
+  background: url(../../../images/Trash.svg) no-repeat;
+  width: 18px;
+  height: 19px;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+
+.card__close-button:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}

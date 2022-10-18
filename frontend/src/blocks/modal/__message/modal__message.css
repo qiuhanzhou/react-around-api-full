@@ -1,0 +1,11 @@
+.modal__message {
+  color: #000;
+  width: 358px;
+  height: 58px;
+
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  margin: 0 auto 60px;
+}

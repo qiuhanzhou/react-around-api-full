@@ -1,0 +1,13 @@
+.modal__content_type_image {
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+  padding: 0;
+  background-color: transparent;
+  position: relative;
+}
+@media screen and (max-width: 768px) {
+  .modal__content_type_image {
+    width: 240px;
+  }
+}
