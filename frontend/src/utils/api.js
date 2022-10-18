@@ -93,7 +93,10 @@ class Api {
   }
 }
 const api = new Api({
-  baseUrl: 'http://localhost:3001',
+  baseUrl:
+    process.env.NODE_ENV === 'production'
+      ? 'https://api.loveali.students.nomoredomainssbs.ru'
+      : 'http://localhost:3001',
 })
 
 export default api
