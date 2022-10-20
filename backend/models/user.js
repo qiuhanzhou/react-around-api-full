@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
       message: 'invalid email',
     },
   },
-  //the password field has no length limit, since it's stored in hash
+  // the password field has no length limit, since it's stored in hash
   password: {
     type: String,
     required: [true, 'The "password" field must be filled in'],
@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.findUserByCredentials = function (email, password) {
   // trying to find the user by email
   return this.findOne({ email })
-    .select('+password')
+    .select('+password') // so we can pull password from
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error('Incorrect email or password'))
@@ -54,13 +54,6 @@ userSchema.statics.findUserByCredentials = function (email, password) {
         return user // now user is available
       })
     })
-}
-
-userSchema.methods.returnUserWithoutPassword = function () {
-  //used in mongoose to change documents to an object
-  const obj = this.toObject()
-  const { password, ...user } = obj
-  return user
 }
 
 // create the model which allows us to interact with our collection of documents and export it

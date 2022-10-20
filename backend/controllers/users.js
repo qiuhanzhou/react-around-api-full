@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+
 const { NODE_ENV, JWT_SECRET } = process.env
 
 const User = require('../models/user')
@@ -11,11 +12,9 @@ const UnauthorizedError = require('../errors/unauthorized-error')
 // the login request handler - POST /signin
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body
-  //only return found user with matching password
+  // only return found user with matching password
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log('POST /signin findUserByCredentials')
-      console.log(user)
       // we're generating a token
       const token = jwt.sign(
         { _id: user._id },
@@ -45,16 +44,17 @@ module.exports.createUser = (req, res, next) => {
       } else {
         return bcrypt
           .hash(password, 10)
-          .then((hash) => {
-            return User.create({
-              name,
-              about,
-              avatar,
-              email,
-              password: hash, // adding the hash to the database
-            })
+          .then((hash) => User.create({
+            name,
+            about,
+            avatar,
+            email,
+            password: hash, // adding the hash to the database
+          }))
+          .then((user) => {
+            const { password, ...newUser } = user.toObject()
+            return res.status(201).send(newUser)
           })
-          .then((user) => res.status(201).send(user))
       }
     })
     .catch((err) => {
@@ -82,24 +82,35 @@ module.exports.getUsers = (req, res, next) => {
 // the getCurrentUser request handler - GET /users/:id AND GET /users/me
 const getUserData = (id, res, next) => {
   User.findById(id)
-    //the orFail() query helper makes the query promise reject if no documents matched the query conditions
+    // the orFail() query helper makes the query promise reject if no documents matched
     .orFail(() => {
-      //throw an error so .catch handles it
+      // throw an error so .catch handles it
       throw new NotFoundError('User ID not found')
     })
     .then((user) => res.status(200).send({ data: user }))
-    .catch(next)
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new BadRequestError('User ID is not valid')
+      }
+      next((err) => {
+        if (err.name === 'CastError') {
+          next(new BadRequestError('Invalid user ID'))
+        } else if (err.statusCode === 404) {
+          next(new NotFoundError('User ID not found'))
+        } else {
+          next(err)
+        }
+      })
+    })
 }
 
 // GET /users/:id
 module.exports.getUserById = (req, res, next) => {
-  console.log('GET /users/:id')
   getUserData(req.params.id, res, next)
 }
 
 // GET /users/me
 module.exports.getCurrentUser = (req, res, next) => {
-  console.log('GET /users/me', req.user)
   getUserData(req.user._id, res, next)
 }
 
@@ -115,17 +126,25 @@ const updateUserProfile = (req, res, next) => {
     },
   )
     .orFail(() => {
-      new NotFoundError('User ID not found')
+      next(new NotFoundError('User ID not found'))
     })
     .then((user) => res.status(200).send({ data: user }))
-    .catch(next)
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Invalid user ID'))
+      } else if (err.statusCode === 404) {
+        next(new NotFoundError('User not found'))
+      } else {
+        next(err)
+      }
+    })
 }
 
 // PATCH /users/me
 module.exports.updateUserInfo = (req, res, next) => {
   updateUserProfile(req, res, next)
 }
-//PATCH '/users/me/avatar'
+// PATCH '/users/me/avatar'
 module.exports.updateUserAvatar = (req, res, next) => {
   updateUserProfile(req, res, next)
 }

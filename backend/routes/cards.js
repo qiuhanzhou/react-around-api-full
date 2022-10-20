@@ -1,6 +1,5 @@
 // create the router
 const router = require('express').Router()
-const auth = require('../middlewares/auth')
 const { validateCardBody } = require('../middlewares/validation')
 
 const {

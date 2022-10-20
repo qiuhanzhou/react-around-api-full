@@ -16,14 +16,11 @@ module.exports.getCards = (req, res, next) => {
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => {
-      console.log('creating card', card)
-      return res.send({ data: card })
-    })
+    .then((card) => res.send({ data: card }))
     .catch(next)
 }
 
-// the deleteCard request handler
+// the deleteCard request handler - DELETE '/cards/:cardId'
 module.exports.deleteCard = (req, res, next) => {
   const currentUserId = req.user._id
   Card.findById(req.params.cardId)
@@ -31,11 +28,11 @@ module.exports.deleteCard = (req, res, next) => {
       throw new NotFoundError('No card found with that id')
     })
     .then((card) => {
-      if (!card.owner.toString() === currentUserId) {
-        throw new ForbiddenError("cannot delete another user's card")
-      } else {
-        Card.deleteOne(card).then(() => res.send({ data: card }))
-      }
+      // if (!card.owner.toString() === currentUserId) {
+      //   throw new ForbiddenError("cannot delete another user's card")
+      // } else {
+      Card.deleteOne(card).then(() => res.send({ data: card }))
+      // }
     })
     .catch(next)
 }
@@ -53,8 +50,6 @@ const updateLikes = (req, res, method, next) => {
     .catch(next)
 }
 
-module.exports.likeCard = (req, res, next) =>
-  updateLikes(req, res, '$addToSet', next)
+module.exports.likeCard = (req, res, next) => updateLikes(req, res, '$addToSet', next)
 
-module.exports.dislikeCard = (req, res, next) =>
-  updateLikes(req, res, '$pull', next)
+module.exports.dislikeCard = (req, res, next) => updateLikes(req, res, '$pull', next)

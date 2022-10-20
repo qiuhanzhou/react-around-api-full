@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -29,7 +29,7 @@ const cardSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-});
+})
 
 // create the model to interact with our collection of documents and export it
-module.exports = mongoose.model('card', cardSchema);
+module.exports = mongoose.model('card', cardSchema)
