@@ -28,11 +28,11 @@ module.exports.deleteCard = (req, res, next) => {
       throw new NotFoundError('No card found with that id')
     })
     .then((card) => {
-      // if (!card.owner.toString() === currentUserId) {
-      //   throw new ForbiddenError("cannot delete another user's card")
-      // } else {
-      Card.deleteOne(card).then(() => res.send({ data: card }))
-      // }
+      if (card.owner.toString() !== currentUserId) {
+        throw new ForbiddenError("cannot delete another user's card")
+      } else {
+        Card.deleteOne(card).then(() => res.send({ data: card }))
+      }
     })
     .catch(next)
 }
@@ -50,6 +50,8 @@ const updateLikes = (req, res, method, next) => {
     .catch(next)
 }
 
-module.exports.likeCard = (req, res, next) => updateLikes(req, res, '$addToSet', next)
+module.exports.likeCard = (req, res, next) =>
+  updateLikes(req, res, '$addToSet', next)
 
-module.exports.dislikeCard = (req, res, next) => updateLikes(req, res, '$pull', next)
+module.exports.dislikeCard = (req, res, next) =>
+  updateLikes(req, res, '$pull', next)

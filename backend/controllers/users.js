@@ -44,15 +44,18 @@ module.exports.createUser = (req, res, next) => {
       } else {
         return bcrypt
           .hash(password, 10)
-          .then((hash) => User.create({
-            name,
-            about,
-            avatar,
-            email,
-            password: hash, // adding the hash to the database
-          }))
+          .then((hash) =>
+            User.create({
+              name,
+              about,
+              avatar,
+              email,
+              password: hash, // adding the hash to the database
+            }),
+          )
           .then((user) => {
             const { password, ...newUser } = user.toObject()
+            console.log(newUser)
             return res.status(201).send(newUser)
           })
       }
@@ -90,23 +93,18 @@ const getUserData = (id, res, next) => {
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new BadRequestError('User ID is not valid')
+        next(new BadRequestError('Invalid user ID'))
+      } else if (err.name === 'DocumentNotFoundError') {
+        next(new NotFoundError('User not found'))
+      } else {
+        next(err)
       }
-      next((err) => {
-        if (err.name === 'CastError') {
-          next(new BadRequestError('Invalid user ID'))
-        } else if (err.statusCode === 404) {
-          next(new NotFoundError('User ID not found'))
-        } else {
-          next(err)
-        }
-      })
     })
 }
 
-// GET /users/:id
+// GET /users/:userId
 module.exports.getUserById = (req, res, next) => {
-  getUserData(req.params.id, res, next)
+  getUserData(req.params.userId, res, next)
 }
 
 // GET /users/me
