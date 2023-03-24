@@ -5,14 +5,14 @@ Around the U.S. is full (MERN) stack web app that allows users to create an acco
 
 ## Technologies:
 
-HTML
-CSS
-React.js
-Express.js
-REST APIs
-MongoDB
-JWT Authorization
-website screenshot
+HTML<br/>
+CSS<br/>
+React.js<br/>
+Express.js<br/>
+REST APIs<br/>
+MongoDB<br/>
+JWT Authorization<br/>
+website screenshot<br/>
 
 
 ## REST API Endpoints
