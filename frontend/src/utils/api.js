@@ -95,7 +95,7 @@ class Api {
 const api = new Api({
   baseUrl:
     process.env.NODE_ENV === 'production'
-      ? 'https://api.loveali.students.nomoredomainssbs.ru'
+      ? 'https://api.around-us.karenzhou.me'
       : 'http://localhost:3001',
 })
 
